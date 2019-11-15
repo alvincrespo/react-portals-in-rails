@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-const FormManager = () =>
-  ReactDOM.createPortal(<p>Hi!</p>, document.getElementById("portal"));
+const FormManager = () => {
+  const [, setDisplayForm] = useState(false);
+
+  return ReactDOM.createPortal(
+    <button type="button" onClick={() => setDisplayForm(true)}>
+      New User
+    </button>,
+    document.getElementById("portal-action")
+  );
+};
 
 export default FormManager;
