@@ -2,18 +2,45 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
 const NewUserForm = ({ onSave, onCancel }) => {
+  const [sUser, setUser] = useState({});
+
+  const onChange = e => {
+    const key = e.target.name;
+    const value = e.target.value;
+    const user = { ...sUser, [key]: value };
+
+    setUser(user);
+  };
+
+  const onFormSave = e => {
+    e.preventDefault();
+    onSave(sUser);
+  };
+
   return (
-    <form>
-      <div class="field">
+    <form onSubmit={onFormSave}>
+      <div className="field">
         <label htmlFor="user_name">Name</label>
-        <input type="text" id="user_name" />
+        <input
+          type="text"
+          id="user_name"
+          name="user_name"
+          onChange={onChange}
+        />
       </div>
-      <div class="field">
+      <div className="field">
         <label htmlFor="user_dob">Birthdate</label>
-        <input type="date" id="user_dob" />
+        <input
+          type="date"
+          id="user_dob"
+          name="user_birthdate"
+          onChange={onChange}
+        />
       </div>
-      <div class="actions">
-        <button type="button">Cancel</button>
+      <div className="actions">
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
         <button type="submit">Create User</button>
       </div>
     </form>
@@ -37,21 +64,34 @@ const FormRenderer = ({ display, onSave, onCancel }) => {
   );
 };
 
+const FormResultsRenderer = ({ users }) =>
+  ReactDOM.createPortal(
+    <ul>
+      {users.map(u => (
+        <li>{u.user_name}</li>
+      ))}
+    </ul>,
+    document.getElementById("portal-results")
+  );
+
 const FormManager = () => {
   const [displayForm, setDisplayForm] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  const onSave = () => {
-    // do something
+  const onSave = user => {
+    setUsers([user, ...users]);
+    setDisplayForm(false);
   };
 
   const onCancel = () => {
-    // do something
+    setDisplayForm(false);
   };
 
   return (
     <>
       <FormAction onClick={() => setDisplayForm(true)} />
       <FormRenderer display={displayForm} onSave={onSave} onCancel={onCancel} />
+      <FormResultsRenderer users={users} />
     </>
   );
 };
