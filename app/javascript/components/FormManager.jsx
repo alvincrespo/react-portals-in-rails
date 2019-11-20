@@ -41,7 +41,7 @@ const NewUserForm = ({ onSave, onCancel }) => {
         <button type="button" onClick={onCancel}>
           Cancel
         </button>
-        <button type="submit">Create User</button>
+        <button type="submit">Add User</button>
       </div>
     </form>
   );
@@ -64,15 +64,42 @@ const FormRenderer = ({ display, onSave, onCancel }) => {
   );
 };
 
-const FormResultsRenderer = ({ users }) =>
-  ReactDOM.createPortal(
-    <ul>
-      {users.map(u => (
-        <li>{u.user_name}</li>
-      ))}
-    </ul>,
+const FormResultsRenderer = ({ users }) => {
+  if (users.length === 0) return null;
+
+  return ReactDOM.createPortal(
+    <form action="/users" acceptCharset="UTF-8" method="post">
+      <input
+        type="hidden"
+        name="authenticity_token"
+        value={document.head.querySelector('[name="csrf-token"]').content}
+      ></input>
+      <ul>
+        {users.map(u => (
+          <li key={`user/${Date.now()}`}>
+            {u.user_name}
+            <input
+              type="text"
+              name="user[name]"
+              value={u.user_name}
+              hidden
+              readOnly
+            />
+            <input
+              type="text"
+              name="user[birthdate]"
+              value={u.user_birthdate}
+              hidden
+              readOnly
+            />
+          </li>
+        ))}
+      </ul>
+      <button type="submit">Create Users</button>
+    </form>,
     document.getElementById("portal-results")
   );
+};
 
 const FormManager = () => {
   const [displayForm, setDisplayForm] = useState(false);
