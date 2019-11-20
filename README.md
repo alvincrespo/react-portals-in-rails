@@ -1,24 +1,57 @@
-# README
+# React Portals + Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Modern UI development within a monolith environment.
 
-Things you may want to cover:
+## Purpose
 
-* Ruby version
+To teach you how to leverage a modern frontend library to create seamless user experiences within a monolith environment using a traditional Rails setup.
 
-* System dependencies
+## Installation
 
-* Configuration
+### Install ruby
 
-* Database creation
+```
+rbenv install 2.6.4
+```
 
-* Database initialization
+Note: Not using [rbenv](https://github.com/rbenv/rbenv)? What are you doing?
 
-* How to run the test suite
+### Install bundler
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+gem install bundler 2.0.2
+```
 
-* Deployment instructions
+### Install frontend deps
 
-* ...
+```
+yarn
+```
+
+Note: Not using [yarn](https://yarnpkg.com/lang/en/)? What are you doing?
+
+### Start PostgreSQL
+
+```
+pg_ctl -D /usr/local/var/postgres start
+```
+
+### Create your db
+
+```
+bundle exec rails db:create
+```
+
+### Migrate your db
+
+```
+bundle exec rails db:migrate
+```
+
+## Running the application
+
+```
+bundle exec rails s
+```
+
+w00t! Visit your app at [http://localhost:3000](http://localhost:3000) 🎉🎉🎉
